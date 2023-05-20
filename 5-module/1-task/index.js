@@ -1,16 +1,16 @@
-/*Я совсем не поняла это задание - почему в index.html сразу стоит   
-  <script>
-    hideSelf();
-  </script>
-  Получается, мы сразу же и вызываем эту функцию?
-  
-  И тесты не проходили, если пытаться в index.js навесить обработчик события 
-    button.addEventListener('click', hideSelf, {once: true}); или
-    button.onclick=hideSelf; 
-    на кнопку, пришлось его в index.html прописывать
-*/
+/*Я так поняла, что поскольку в index.html функция hideSelf сразу вызывается, без навешивания на какой-либо объект, 
+то нужный объект мы определяем уже в процессе выполнения*/
 
 function hideSelf() {
-  let button = document.getElementsByClassName('hide-self-button')[0];
-  button.hidden = true;
+  let target;
+
+  document.addEventListener('click', function(event) {
+    target = event.target;
+
+    let button = document.getElementsByClassName('hide-self-button')[0];
+
+    if (target.classList.contains('hide-self-button')) {
+      button.hidden = true;
+    }
+  });
 }
