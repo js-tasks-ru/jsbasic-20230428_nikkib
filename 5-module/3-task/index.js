@@ -1,4 +1,5 @@
 function initCarousel() {
+  let carousel = document.querySelector('.carousel');
   let carouselArrowRight = document.querySelector('.carousel__arrow_right');
   let carouselArrowLeft = document.querySelector('.carousel__arrow_left');
   let carouselInner = document.querySelector('.carousel__inner');
@@ -8,7 +9,7 @@ function initCarousel() {
 
   carouselArrowLeft.style.display = 'none';
 
-  document.addEventListener('click', function(event) {
+  carousel.addEventListener('click', function(event) {
 
     if (event.target == carouselArrowRight) {
       translatePosition += carouselSlideWidth;
