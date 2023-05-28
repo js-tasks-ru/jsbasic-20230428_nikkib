@@ -3,16 +3,16 @@ import createElement from '../../assets/lib/create-element.js';
 export default class Carousel {
   elem = null;
   #slides = '';
-  slideCount = 0;
-  slidesCount = 0;
-  translatePosition = 0;
+  #slideCount = 0;
+  #slidesCount = 0;
+  #translatePosition = 0;
 
   constructor(slides) {
     this.#slides = slides;
     this.elem = this.#render();
-    this.slideCount = 1;
-    this.slidesCount = this.#countSlides();
-    this.translatePosition = 0;
+    this.#slideCount = 1;
+    this.#slidesCount = this.#countSlides();
+    this.#translatePosition = 0;
   }
 
   #render() {
@@ -79,27 +79,27 @@ export default class Carousel {
   #clickArowRight = () => {
     let carouselInner = this.elem.querySelector('.carousel__inner');
     let carouselSlideWidth = this.elem.querySelector('.carousel__img').offsetWidth;
-    this.translatePosition += carouselSlideWidth;
-    carouselInner.style.transform = 'translateX(-' + this.translatePosition +'px)';
-    this.slideCount++;
+    this.#translatePosition += carouselSlideWidth;
+    carouselInner.style.transform = 'translateX(-' + this.#translatePosition +'px)';
+    this.#slideCount++;
     this.#arrowsCheck();
   }
 
   #clickArowLeft = () => {
     let carouselInner = this.elem.querySelector('.carousel__inner');
     let carouselSlideWidth = this.elem.querySelector('.carousel__img').offsetWidth;
-    this.translatePosition -= carouselSlideWidth;
-    carouselInner.style.transform = 'translateX(-' + this.translatePosition +'px)';
-    this.slideCount--;
+    this.#translatePosition -= carouselSlideWidth;
+    carouselInner.style.transform = 'translateX(-' + this.#translatePosition +'px)';
+    this.#slideCount--;
     this.#arrowsCheck();
   }
 
   #arrowsCheck = () => {
     let carouselArrowRight = this.elem.querySelector('.carousel__arrow_right'); 
     let carouselArrowLeft = this.elem.querySelector('.carousel__arrow_left');
-    if (this.slideCount == 1) {
+    if (this.#slideCount == 1) {
       carouselArrowLeft.style.display = 'none';
-    } else if (this.slideCount == this.slidesCount) {
+    } else if (this.#slideCount == this.#slidesCount) {
       carouselArrowRight.style.display = 'none';
     } else {
       carouselArrowLeft.style.display = '';
