@@ -46,7 +46,6 @@ export default class Carousel {
       
       //добавляем слайд к карусели
       carouselInner.append(slide);
-      let iid = item.id;
     }
 
     //назначаем событие при клике на стрелки
@@ -124,16 +123,16 @@ export default class Carousel {
 
   #slideTemplate() {
     return `
-      <div class="carousel__slide"  data-id="">
-        <img class="carousel__img" alt="slide">
-        <div class="carousel__caption">
-          <span class="carousel__price"></span>
-          <div class="carousel__title"></div>
-          <button type="button" class="carousel__button">
+      <div class="carousel__slide" data-id="${id}">
+      <img class="carousel__img" alt="slide" src="${''}">
+      <div class="carousel__caption">
+        <span class="carousel__price">${price}</span>
+        <div class="carousel__title">${title}</div>
+        <button type="button" class="carousel__button">
           <img src="/assets/images/icons/plus-icon.svg" alt="icon">
-          </button>
-        </div>
+        </button>
       </div>
+    </div>
     `
   }
 }
