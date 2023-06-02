@@ -7,6 +7,8 @@ export default class StepSlider {
   #shiftX = 0;
   activeValue = 0;
   xCoord = 0;
+  sliderThumb = null;
+  sliderProgress = null;
 
   constructor({ steps, value = 0 }) {
     this.#steps = steps;
@@ -45,12 +47,12 @@ export default class StepSlider {
     let sliderValue = slider.querySelector('.slider__value');
     sliderValue.textContent = 0;
     sliderSteps.querySelectorAll('span')[0].classList.add("slider__step-active");
-    let sliderProgress = slider.querySelector('.slider__progress');
-    sliderProgress.style.width = 0;
+    this.sliderProgress = slider.querySelector('.slider__progress');
+    this.sliderProgress.style.width = 0;
 
     //отключаем встроенный обработчик перетаскивания
-    let sliderThumb = slider.querySelector('.slider__thumb');
-    sliderThumb.ondragstart = () => false;
+    this.sliderThumb = slider.querySelector('.slider__thumb');
+    this.sliderThumb.ondragstart = () => false;
 
     //назначаем обработчик события при перемещении слайдера
     slider.addEventListener('pointerdown', this.#onPointerDown);
@@ -65,21 +67,23 @@ export default class StepSlider {
     document.addEventListener('pointermove', this.#onPointerMove);
     document.addEventListener('pointerup', this.#onPointerUp);
 
+    this.xCoord = event.pageX - this.elem.getBoundingClientRect().left;
+
     this.#getCoords();//отрисовка по координатам, в случае если был только клик, далее выполнится pointerup
   }
 
   #onPointerMove = (event) => {
     event.preventDefault();
+
+    this.xCoord = event.pageX - this.elem.getBoundingClientRect().left;
     
-    this.#getCoords();//отрисовка по координатам
+    this.#getCoords(event);//отрисовка по координатам
   }
 
   #onPointerUp = () => {
     //после отпускания ползунка закрашиваемая ширина и сам ползунок перемещаются к ближайшему целому значению
-    let sliderProgress = this.elem.querySelector('.slider__progress');
-    sliderProgress.style.width = this.activeValue / (this.#steps - 1) * 100 + '%';
-    let sliderThumb = this.elem.querySelector('.slider__thumb');
-    sliderThumb.style.left = this.activeValue * (this.elem.getBoundingClientRect().width / (this.#steps - 1)) + 'px';
+    this.sliderProgress.style.width = this.activeValue / (this.#steps - 1) * 100 + '%';
+    this.sliderThumb.style.left =  this.activeValue / (this.#steps - 1) * 100 + '%';
 
     this.elem.classList.remove('slider_dragging');
     document.removeEventListener('pointermove', this.#onPointerMove);
@@ -95,13 +99,8 @@ export default class StepSlider {
   }
 
   #getCoords = () => {
-    //определяем смещение позиционирования под курсором
-    let sliderThumb = this.elem.querySelector('.slider__thumb');
-  //  this.#shiftX = event.clientX - sliderThumb.getBoundingClientRect().left;
     
-  //перемещаем ползунок
-    this.xCoord = event.pageX - this.elem.getBoundingClientRect().left;// - this.#shiftX;
-
+    //перемещаем ползунок
     if (this.xCoord < 0) {
       this.xCoord = 0;
     }
@@ -110,7 +109,7 @@ export default class StepSlider {
       this.xCoord = this.elem.getBoundingClientRect().width;
     }
 
-    sliderThumb.style.left = this.xCoord + 'px';
+    this.sliderThumb.style.left = this.xCoord / this.elem.getBoundingClientRect().width * 100 + '%';
 
     //определяем активное число шагов
     let xCoordRelative = this.xCoord / this.elem.getBoundingClientRect().width;
@@ -123,9 +122,8 @@ export default class StepSlider {
     }
 
     //закрашиваем пройденные шаги
-    let sliderProgress = this.elem.querySelector('.slider__progress');
     let sliderProgressWidth = xCoordRelative * 100 ;
-    sliderProgress.style.width = `${sliderProgressWidth}%`;
+    this.sliderProgress.style.width = `${sliderProgressWidth}%`;
 
     //отображаем значение шага
     let approxValue = xCoordRelative * (this.#steps - 1);

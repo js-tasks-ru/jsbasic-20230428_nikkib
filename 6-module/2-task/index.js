@@ -10,7 +10,7 @@ export default class ProductCard {
   }
 
   #render() {
-    const table = createElement(this.#template());
+    const table = createElement(this.#template);
     
     //записываем имя
     let title = table.querySelector('.card__title');
@@ -48,11 +48,11 @@ export default class ProductCard {
     return `
       <div class="card 2">
       <div class="card__top">
-        <img class="card__image" alt="product">
-        <span class="card__price"></span>
+        <img class="card__image" alt="product" src="${''}">
+        <span class="card__price">${price}</span>
       </div>
       <div class="card__body">
-        <div class="card__title"></div>
+        <div class="card__title">${title}</div>
           <button type="button" class="card__button">
             <img src="/assets/images/icons/plus-icon.svg" alt="icon">
           </button>

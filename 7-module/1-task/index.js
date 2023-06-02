@@ -12,7 +12,7 @@ export default class RibbonMenu {
   #render() {
     //без хэлпера createElement потренироваться
     //создаем корневой элемент меню
-    const ribbon = document.createElement('div');
+    /*const ribbon = document.createElement('div');
     ribbon.classList.add('ribbon');
   
     //создаем левую стрелку
@@ -22,7 +22,7 @@ export default class RibbonMenu {
     ribbon.append(arrowLeft);
 
     //создаем ссылки меню
-    const categoriesList = this.#categories.map(item => `<a href="http://www.say7.info" class="ribbon__item" data-id=${item.id}>${item.name}</a>`).join('');
+    const categoriesList = this.#categories.map(item => `<a href="#" class="ribbon__item" data-id=${item.id}>${item.name}</a>`).join('');
     const ribbonInner = document.createElement('nav');
     ribbonInner.classList.add('ribbon__inner');
     ribbonInner.innerHTML = categoriesList;
@@ -33,9 +33,18 @@ export default class RibbonMenu {
     const arrowRight = document.createElement('button');
     arrowRight.className = 'ribbon__arrow ribbon__arrow_right ribbon__arrow_visible';
     arrowRight.innerHTML = '<img src="/assets/images/icons/angle-icon.svg" alt="icon">';
-    ribbon.append(arrowRight);
+    ribbon.append(arrowRight);*/
+
+    //создаем элемент по шаблону
+    let ribbon = createElement(this.#template());
+    let categoriesList = this.#categories.map(item => `<a href="#" class="ribbon__item" data-id=${item.id}>${item.name}</a>`).join('');
+    let ribbonInner = ribbon.querySelector('nav');
+    ribbonInner.innerHTML = categoriesList;
+    ribbonInner.firstElementChild.classList.add('ribbon__item_active');
 
     //назначаем события при клике на стрелки, меню и прокрутке
+    let arrowRight = ribbon.querySelector('.ribbon__arrow_right');
+    let arrowLeft = ribbon.querySelector('.ribbon__arrow_left');
     arrowRight.addEventListener('click', this.#clickArrowRight);
     arrowLeft.addEventListener('click', this.#clickArrowLeft);
     ribbonInner.addEventListener('scroll', this.#scrollRibbon);
@@ -44,6 +53,23 @@ export default class RibbonMenu {
     }
 
     return ribbon;
+  }
+
+  #template() {
+    return `
+      <div class="ribbon">
+        <button class="ribbon__arrow ribbon__arrow_left">
+          <img src="/assets/images/icons/angle-icon.svg" alt="icon">
+        </button>
+
+        <nav class="ribbon__inner">
+        </nav>
+
+        <button class="ribbon__arrow ribbon__arrow_right ribbon__arrow_visible">
+          <img src="/assets/images/icons/angle-icon.svg" alt="icon">
+        </button>
+      </div>
+    `
   }
 
   #clickMenu = (event) => {
