@@ -6,6 +6,10 @@ export default class Carousel {
   #slideCount = 0;
   #slidesCount = 0;
   #translatePosition = 0;
+  id = '';
+  title = '';
+  price = 0;
+  src = '';
 
   constructor(slides) {
     this.#slides = slides;
@@ -23,22 +27,27 @@ export default class Carousel {
     carouselArrowLeft.style.display = 'none';
 
     for (let item of this.#slides) {
-      let slide = createElement(this.#slideTemplate);
+      this.id = item.id;
+      this.title = item.name;
+      this.price = '€' + item.price.toFixed(2);
+      this.src = '/assets/images/carousel/' + item.image;
+
+      let slide = createElement(this.#slideTemplate());
       
-      //добавляем id
-      slide.dataset.id = item.id;
+      //добавляем id -- без переменной
+      //slide.dataset.id = item.id;
 
-      //записываем имя
-      let title = slide.querySelector('.carousel__title');
-      title.textContent = item.name;
+      //записываем имя -- без переменной
+      //let title = slide.querySelector('.carousel__title');
+      //title.textContent = item.name;
 
-      //записываем цену
-      let price = slide.querySelector('.carousel__price');
-       price.textContent = '€' + item.price.toFixed(2);
+      //записываем цену -- без переменной
+      //let price = slide.querySelector('.carousel__price');
+      //price.textContent = '€' + item.price.toFixed(2);
 
-      //записываем картинку
-      let image = slide.querySelector('.carousel__img');
-      image.setAttribute('src', '/assets/images/carousel/' + item.image);
+      //записываем картинку -- без переменной
+      //let image = slide.querySelector('.carousel__img');
+      //image.setAttribute('src', '/assets/images/carousel/' + item.image);
 
       //назначаем событие при клике на кнопке
       let button = slide.querySelector('.carousel__button');
@@ -121,13 +130,13 @@ export default class Carousel {
     `
   }
 
-  #slideTemplate() {
+  #slideTemplate = () => {
     return `
-      <div class="carousel__slide" data-id="${id}">
-      <img class="carousel__img" alt="slide" src="${''}">
+      <div class="carousel__slide" data-id="${this.id}">
+      <img class="carousel__img" alt="slide" src="${this.src}">
       <div class="carousel__caption">
-        <span class="carousel__price">${price}</span>
-        <div class="carousel__title">${title}</div>
+        <span class="carousel__price">${this.price}</span>
+        <div class="carousel__title">${this.title}</div>
         <button type="button" class="carousel__button">
           <img src="/assets/images/icons/plus-icon.svg" alt="icon">
         </button>
