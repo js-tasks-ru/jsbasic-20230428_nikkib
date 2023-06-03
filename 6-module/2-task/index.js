@@ -3,6 +3,9 @@ import createElement from '../../assets/lib/create-element.js';
 export default class ProductCard {
   elem = null;
   #product = '';
+  title = '';
+  price = 0;
+  src = '';
 
   constructor(product) {
     this.#product = product;
@@ -10,19 +13,23 @@ export default class ProductCard {
   }
 
   #render() {
-    const table = createElement(this.#template);
-    
-    //записываем имя
-    let title = table.querySelector('.card__title');
-    title.textContent = this.#product.name;
+    this.title = this.#product.name;
+    this.price = '€' + this.#product.price.toFixed(2);
+    this.src = '/assets/images/products/' + this.#product.image;
 
-    //записываем цену
-    let price = table.querySelector('.card__price');
-    price.textContent = '€' + this.#product.price.toFixed(2);
+    const table = createElement(this.#template());
 
-    //записываем картинку
-    let image = table.querySelector('.card__image');
-    image.setAttribute('src', '/assets/images/products/' + this.#product.image);
+    //записываем имя -- без переменной
+    //let title = table.querySelector('.card__title');
+    //title.textContent = this.#product.name;
+
+    //записываем цену -- без переменной
+    //let price = table.querySelector('.card__price');
+    //price.textContent = '€' + this.#product.price.toFixed(2);
+
+    //записываем картинку -- без переменной
+    //let image = table.querySelector('.card__image');
+   // image.setAttribute('src', '/assets/images/products/' + this.#product.image);
 
     //вариант добавления события на кнопку без свойства со стрелочной функцией
     /*let button = table.querySelector('.card__button');
@@ -44,15 +51,16 @@ export default class ProductCard {
     return table;
   }
 
-  #template() {
+  #template = () => {
+    
     return `
       <div class="card 2">
       <div class="card__top">
-        <img class="card__image" alt="product" src="${''}">
-        <span class="card__price">${price}</span>
+        <img class="card__image" alt="product" src="${this.src}">
+        <span class="card__price">${this.price}</span>
       </div>
       <div class="card__body">
-        <div class="card__title">${title}</div>
+        <div class="card__title">${this.title}</div>
           <button type="button" class="card__button">
             <img src="/assets/images/icons/plus-icon.svg" alt="icon">
           </button>
