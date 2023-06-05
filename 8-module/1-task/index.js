@@ -1,6 +1,8 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class CartIcon {
+  initialTopCoord = null;
+
   constructor() {
     this.render();
 
@@ -39,6 +41,31 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // ваш код ...
+    //проверяем, что иконка корзины видима
+    if (!this.elem.offsetWidth) 
+      return;
+
+    //начальное положение корзины по вертикали
+    if (!this.initialTopCoord) {
+      this.initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
+    }
+
+    //определяем положение корзины по горизонтали
+    let leftIndent = Math.min(
+      document.querySelector('.container').getBoundingClientRect().right + 20,
+      document.documentElement.clientWidth - this.elem.offsetWidth - 10
+    ) + 'px'
+    
+    //определяем положение корзины относительно прокрутки
+    if (window.pageYOffset > this.initialTopCoord) {
+      this.elem.style = `position: fixed; top: 50px; zIndex: 9999; right: 10px; left: ${leftIndent}`;
+    } else {
+      this.elem.style = `position: ''; top: ''; zIndex: ''; left: ''`;
+    }
+
+    //если мобильный экран, обнуляем стили корзины
+    if (document.documentElement.clientWidth <= 767) {
+      this.elem.style = `position: ''; top: ''; zIndex: ''; left: ''`;
+    }
   }
 }
