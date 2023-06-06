@@ -173,7 +173,7 @@ export default class Cart {
 
     if (document.body.classList.contains('is-modal-open')) {
       let productId = cartItem.product.id;
-      modalBody = document.querySelector('.modal__body');
+      let modalBody = document.querySelector('.modal__body');
 
       // Элемент, который хранит количество товаров с таким productId в корзине
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
